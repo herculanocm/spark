@@ -13,6 +13,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.types._
 
+
 object Principal {
   
   def quebraVendasPais(line: String) = {
@@ -20,6 +21,7 @@ object Principal {
      (separaBase(10).toUpperCase().trim(),separaBase(16).replace(",", ".").trim().toFloat)
   }
     
+
   
   def main(args: Array[String]){
     
@@ -33,13 +35,25 @@ object Principal {
     // removendo o cabeçalho
     val data = carregaBase.filter(row => row != header)   
     
+       
     val vendaPorPais = data.map(quebraVendasPais)
     
-    vendaPorPais.foreach(println)
+   
     
-    val reduzindoVendas = vendaPorPais.reduceByKey( (x,y) => x+y)
+   vendaPorPais.foreach(println)
     
-    reduzindoVendas.foreach(println)
+   val reduzindoVendas = vendaPorPais.reduceByKey( (x,y) => x+y)
     
+   
+    val sqlContext = new org.apache.spark.sql.SQLContext(sc) 
+    import sqlContext.implicits._
+
+   
+   val dataFrameVendas = reduzindoVendas.coalesce(1).toDF()
+   
+  dataFrameVendas.show()
+  
+  
+    dataFrameVendas.write.option("header", "false").csv("./exportacao/dataFrameVendas.csv")
   }
 }
