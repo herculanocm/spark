@@ -4,15 +4,15 @@ import org.apache.spark._
 import org.apache.spark.SparkContext._
 import org.apache.log4j._
 
-object LucroProdutoPais {
-
+object QtdProdutoPais {
+  
     def quebraBase(line : String)={
     var linha = line.toUpperCase().replace("Á","A").replace("Ã","A")
     linha = linha.replace("É","E").replace("Ê","E")
     linha = linha.replace("Í","I").replace("Ú","U")
     linha = linha.replace("Ó","O").replace("Õ","O").replace("Ô","O")
     val linhaQuebrada = linha.split(";")
-    ((linhaQuebrada(12).trim() + "," + linhaQuebrada(10).trim()), linhaQuebrada(19).replace(",", ".").trim().toFloat)
+    ((linhaQuebrada(12).trim() + "," + linhaQuebrada(10).trim()), linhaQuebrada(17).trim().toInt)
   }
   
   def main(args: Array[String]){
@@ -46,7 +46,7 @@ object LucroProdutoPais {
     //val dataFrameProdutos = reduzMapeamento.coalesce(1).toDF()
     dataFrameProdutos.show()
     
-    dataFrameProdutos.write.option("header", "false").csv("./exportacao/dataFrameLucroProdutoPais.csv")    
+    dataFrameProdutos.write.option("header", "false").csv("./exportacao/dataFrameQtdProdutoPais.csv")    
     
-  }      
+  }   
 }

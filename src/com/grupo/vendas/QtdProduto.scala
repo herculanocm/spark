@@ -42,7 +42,7 @@ object QtdProduto {
     //val dataFrameProdutos = reduzMapeamento.coalesce(1).toDF()
     dataFrameProdutos.show()
     
-    dataFrameProdutos.write.option("header", "false").csv("./exportacao/dataFrameProdutos.csv")    
+    dataFrameProdutos.write.option("header", "false").csv("./exportacao/dataFrameQtdProdutos.csv")    
     
   }    
 }
